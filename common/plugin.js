@@ -14,7 +14,8 @@ function getPluginConfig(name, type) {
 
   return {
     server: pluginConfig.server,
-    client: pluginConfig.client
+    client: pluginConfig.client,
+    options: pluginConfig.options,
   }
 }
 
@@ -41,7 +42,7 @@ exports.initPlugins = function (plugins, type) {
         pluginConfig,
         {
           name: item.name,
-          options: item.options,
+          options: pluginConfig.options || item.options,
           enable: item.enable === false ? false : true
         })
     }

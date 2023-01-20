@@ -16,7 +16,7 @@ class Footer extends Component {
     return (
       <div className="footer-wrapper">
         <Row className="footer-container">
-          {this.props.footList.map(function(item, i) {
+          {this.props.footList.map(function (item, i) {
             return (
               <FootItem
                 key={i}
@@ -48,7 +48,7 @@ class FootItem extends Component {
           {this.props.iconType ? <Icon type={this.props.iconType} className="icon" /> : ''}
           {this.props.title}
         </h4>
-        {this.props.linkList.map(function(item, i) {
+        {this.props.linkList.map(function (item, i) {
           return (
             <p key={i}>
               <a href={item.itemLink} className="link">
@@ -65,38 +65,16 @@ class FootItem extends Component {
 Footer.defaultProps = {
   footList: [
     {
-      title: 'GitHub',
-      iconType: 'github',
-      linkList: [
-        {
-          itemTitle: 'YApi 源码仓库',
-          itemLink: 'https://github.com/YMFE/yapi'
-        }
-      ]
+      title: '',
+      linkList: []
     },
     {
-      title: '团队',
-      iconType: 'team',
-      linkList: [
-        {
-          itemTitle: 'YMFE',
-          itemLink: 'https://ymfe.org'
-        }
-      ]
+      title: '',
+      linkList: []
     },
     {
-      title: '反馈',
-      iconType: 'aliwangwang-o',
-      linkList: [
-        {
-          itemTitle: 'Github Issues',
-          itemLink: 'https://github.com/YMFE/yapi/issues'
-        },
-        {
-          itemTitle: 'Github Pull Requests',
-          itemLink: 'https://github.com/YMFE/yapi/pulls'
-        }
-      ]
+      title: '',
+      linkList: []
     },
     {
       title: `Copyright © 2018-${new Date().getFullYear()} YMFE`,

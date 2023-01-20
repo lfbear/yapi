@@ -35,18 +35,16 @@ function CheckCrossInstall(props) {
             <div>
               重要：当前的接口测试服务，需安装免费测试增强插件,仅支持 chrome
               浏览器，选择下面任意一种安装方式：
-              {/* <div>
+              <div>
                 <a
                   target="blank"
-                  href="https://chrome.google.com/webstore/detail/cross-request/cmnlfmgbjmaciiopcgodlhpiklaghbok?hl=en-US"
+                  href="https://chrome.google.com/webstore/detail/yapi-x/ebiododddhjccikhminneafpoppneknc"
                 >
-                  [Google 商店获取（需翻墙]
+                  [Install Yapi-X From Chrome web store]
                 </a>
-              </div> */}
-              <div>
                 <a target="blank" href="https://juejin.im/post/5e3bbd986fb9a07ce152b53d">
                   {' '}
-                  [谷歌请求插件详细安装教程]{' '}
+                  [Install Cross-request From sourcecode]{' '}
                 </a>
               </div>
             </div>

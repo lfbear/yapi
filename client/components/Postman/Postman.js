@@ -158,8 +158,8 @@ export default class Run extends Component {
   handleReqHeader = (value, env) => {
     let index = value
       ? env.findIndex(item => {
-          return item.name === value;
-        })
+        return item.name === value;
+      })
       : 0;
     index = index === -1 ? 0 : index;
 
@@ -217,14 +217,14 @@ export default class Run extends Component {
     }
 
     let example = {}
-    if(this.props.type === 'inter'){
+    if (this.props.type === 'inter') {
       example = ['req_headers', 'req_query', 'req_body_form'].reduce(
         (res, key) => {
           res[key] = (data[key] || []).map(item => {
             if (
               item.type !== 'file' // 不是文件类型
-                && (item.value == null || item.value === '') // 初始值为空
-                && item.example != null // 有示例值
+              && (item.value == null || item.value === '') // 初始值为空
+              && item.example != null // 有示例值
             ) {
               item.value = item.example;
             }
@@ -424,7 +424,7 @@ export default class Run extends Component {
   };
 
   changeParam = (name, v, index, key) => {
-    
+
     key = key || 'value';
     const pathParam = deepCopyJson(this.state[name]);
 
@@ -811,7 +811,7 @@ export default class Run extends Component {
             key="3"
             className={
               HTTP_METHOD[method].request_body &&
-              ((req_body_type === 'form' && req_body_form.length > 0) || req_body_type !== 'form')
+                ((req_body_type === 'form' && req_body_form.length > 0) || req_body_type !== 'form')
                 ? 'POST'
                 : 'hidden'
             }
@@ -925,16 +925,16 @@ export default class Run extends Component {
                 className={
                   'res-code ' +
                   (this.state.resStatusCode >= 200 &&
-                  this.state.resStatusCode < 400 &&
-                  !this.state.loading
+                    this.state.resStatusCode < 400 &&
+                    !this.state.loading
                     ? 'success'
                     : 'fail')
                 }
               >
                 {this.state.resStatusCode + '  ' + this.state.resStatusText}
               </h2>
-              <div>
-                <a rel="noopener noreferrer"  target="_blank" href="https://juejin.im/post/5c888a3e5188257dee0322af">YApi 新版如何查看 http 请求数据</a>
+              <div style={{ textAlign: 'right' }}>
+                <a rel="noopener noreferrer" target="_blank" style={{ color: '#999' }} href="https://juejin.im/post/5c888a3e5188257dee0322af">Cross-request插件使用方法</a>
               </div>
               {this.state.test_valid_msg && (
                 <Alert
@@ -984,14 +984,14 @@ export default class Run extends Component {
                   {
                     this.state.autoPreviewHTML && this.testResponseBodyIsHTML
                       ? <iframe
-                          className="pretty-editor-body"
-                          srcDoc={this.state.test_res_body}
-                        />
+                        className="pretty-editor-body"
+                        srcDoc={this.state.test_res_body}
+                      />
                       : <AceEditor
-                          readOnly={true}
-                          className="pretty-editor-body"
-                          data={this.state.test_res_body}
-                          mode={handleContentType(this.state.test_res_header)}
+                        readOnly={true}
+                        className="pretty-editor-body"
+                        data={this.state.test_res_body}
+                        mode={handleContentType(this.state.test_res_header)}
                       />
                   }
                 </div>

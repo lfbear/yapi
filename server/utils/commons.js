@@ -103,7 +103,7 @@ exports.log = (msg, type) => {
   let logfile = path.join(yapi.WEBROOT_LOG, year + '-' + month + '.log');
 
   if (typeof msg === 'object') {
-    if (msg instanceof Error) msg = msg.message;
+    if (msg instanceof Error) msg = msg.message + '\n' + msg.stack + '\n';
     else msg = JSON.stringify(msg);
   }
 
@@ -284,12 +284,12 @@ exports.verifyPath = path => {
 exports.sandbox = (sandbox, script) => {
   try {
     const vm = require('vm');
-    sandbox = sandbox || {};	
-    script = new vm.Script(script);	
-    const context = new vm.createContext(sandbox);	
-    script.runInContext(context, {	
-      timeout: 3000	
-    });	      
+    sandbox = sandbox || {};
+    script = new vm.Script(script);
+    const context = new vm.createContext(sandbox);
+    script.runInContext(context, {
+      timeout: 3000
+    });
     return sandbox
   } catch (err) {
     throw err
@@ -432,7 +432,8 @@ exports.createAction = (router, baseurl, routerController, action, path, method,
           return (ctx.body = yapi.commons.resReturn(null, 400, validResult.message));
         }
       }
-      if (inst.$auth === true) {
+      //allow oauth2 plugin
+      if (inst.$auth === true || path === "/plugin/oauth2/callback") {
         await inst[action].call(inst, ctx);
       } else {
         if (ws === true) {
