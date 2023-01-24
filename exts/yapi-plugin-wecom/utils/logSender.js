@@ -25,7 +25,7 @@ class SendLogViaDingDingSender {
       yapi.commons.log("yapi-plugin-wecom: 该项目未配置企业微信推送，跳过通知。");
       return;
     }
-    console.log("aaaaa", this.log)
+
     if (this.log.data.current.status == 'undone' && this.log.data.old.status == 'undone') {
       yapi.commons.log("yapi-plugin-wecom: 未发布状态的接口不进行通知");
       return;
@@ -36,7 +36,13 @@ class SendLogViaDingDingSender {
     const projectInfo = await this.getProjectInfo(this.log.typeid);
     const projectName = projectInfo.name;
     const members = await this.getProjectMembers(projectInfo);
-    const targetURL = Config.instance.host + '/project/' + this.log.typeid + '/interface/api/' + this.log.data.interface_id
+    let target = ''
+    if (this.log.data.interface_id) {
+      target = '/interface/api/' + this.log.data.interface_id
+    } else {
+      target = '/' + this.log.data.type
+    }
+    const targetURL = Config.instance.host + '/project/' + this.log.typeid + target
 
     //const markdown = new HTMLNodeToMarkdownTranslater().translate(node);
     this.dingdingModel.hooks.forEach((url) => {
