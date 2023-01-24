@@ -1,0 +1,12 @@
+{
+  "name": "yapi-plugin-wecom",
+  "version": "1.3.0",
+  "description": "Wecom robot integration for yapi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "none",
+  "license": "MIT",
+  "devDependencies": {}
+}
