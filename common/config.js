@@ -23,6 +23,8 @@ module.exports = {
     name: 'swagger-auto-sync'
   }, {
     name: 'oauth2'
+  }, {
+    name: 'wecom'
   }
     // {
     //   name: 'test'
