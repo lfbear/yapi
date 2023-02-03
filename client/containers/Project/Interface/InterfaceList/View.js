@@ -253,6 +253,19 @@ class View extends Component {
     }
   };
 
+  showReDocLink = (detail) => {
+    if (detail.api_opened && detail.status === 'done') {
+      return <span>{location.protocol +
+        '//' +
+        location.hostname +
+        (location.port !== '' ? ':' + location.port : '') +
+        `/api/plugin/redoc/${detail._id
+        }`}</span>;
+    } else {
+      return <span>仅<b>已完成</b>和<b>开放状态</b>的接口可以提供该链接</span>;
+    }
+  };
+
   render() {
     const dataSource = [];
     if (this.props.curData.req_headers && this.props.curData.req_headers.length) {
@@ -361,7 +374,7 @@ class View extends Component {
 
     let methodColor =
       variable.METHOD_COLOR[
-        this.props.curData.method ? this.props.curData.method.toLowerCase() : 'get'
+      this.props.curData.method ? this.props.curData.method.toLowerCase() : 'get'
       ];
 
     // statusColor = statusColor[this.props.curData.status?this.props.curData.status.toLowerCase():"undone"];
@@ -461,12 +474,11 @@ class View extends Component {
                 onClick={() =>
                   window.open(
                     location.protocol +
-                      '//' +
-                      location.hostname +
-                      (location.port !== '' ? ':' + location.port : '') +
-                      `/mock/${this.props.currProject._id}${this.props.currProject.basepath}${
-                        this.props.curData.path
-                      }`,
+                    '//' +
+                    location.hostname +
+                    (location.port !== '' ? ':' + location.port : '') +
+                    `/mock/${this.props.currProject._id}${this.props.currProject.basepath}${this.props.curData.path
+                    }`,
                     '_blank'
                   )
                 }
@@ -475,12 +487,21 @@ class View extends Component {
                   '//' +
                   location.hostname +
                   (location.port !== '' ? ':' + location.port : '') +
-                  `/mock/${this.props.currProject._id}${this.props.currProject.basepath}${
-                    this.props.curData.path
+                  `/mock/${this.props.currProject._id}${this.props.currProject.basepath}${this.props.curData.path
                   }`}
               </span>
             </Col>
           </Row>
+
+          <Row className="row">
+            <Col span={4} className="colKey">
+              Redoc地址：
+            </Col>
+            <Col span={18} className="colValue">
+              {this.showReDocLink(this.props.curData)}
+            </Col>
+          </Row>
+
           {this.props.curData.custom_field_value &&
             this.props.custom_field.enable && (
               <Row className="row remark">
@@ -545,7 +566,7 @@ class View extends Component {
           style={{
             display:
               this.props.curData.method &&
-              HTTP_METHOD[this.props.curData.method.toUpperCase()].request_body
+                HTTP_METHOD[this.props.curData.method.toUpperCase()].request_body
                 ? ''
                 : 'none'
           }}
@@ -556,10 +577,10 @@ class View extends Component {
           {this.props.curData.req_body_type === 'form'
             ? this.req_body_form(this.props.curData.req_body_type, this.props.curData.req_body_form)
             : this.req_body(
-                this.props.curData.req_body_type,
-                this.props.curData.req_body_other,
-                this.props.curData.req_body_is_json_schema
-              )}
+              this.props.curData.req_body_type,
+              this.props.curData.req_body_other,
+              this.props.curData.req_body_is_json_schema
+            )}
         </div>
 
         <h2 className="interface-title">返回数据</h2>

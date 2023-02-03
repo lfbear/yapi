@@ -68,26 +68,49 @@ class exportSwaggerController extends baseController {
 
     async exportData(ctx) {
         let pid = ctx.request.query.pid;
+        let iid = ctx.request.query.iid;
         let type = ctx.request.query.type;
         let status = ctx.request.query.status;
 
-        if (!pid) {
-            ctx.body = yapi.commons.resReturn(null, 200, 'pid 不为空');
+        if (!pid && !iid) {
+            ctx.body = yapi.commons.resReturn(null, 200, 'pid/iid 不为空');
         }
         let curProject;
         let tp = '';
         try {
-            curProject = await this.projectModel.get(pid);
-            ctx.set('Content-Type', 'application/octet-stream');
-            const list = await this.handleListClass(pid, status);
-
             switch (type) {
+                ///api/plugin/exportSwagger?type=OpenAPIV2&pid=11&status=open&isWiki=false
                 case 'OpenAPIV2':
                     { //in this time, only implemented OpenAPI V2.0
+                        curProject = await this.projectModel.get(pid);
+                        ctx.set('Content-Type', 'application/octet-stream');
+                        const list = await this.handleListClass(pid, status);
                         let data = this.handleExistId(list);
                         let model = await convertToSwaggerV2Model(data);
                         tp = JSON.stringify(model, null, 2);
                         ctx.set('Content-Disposition', `attachment; filename=swaggerApi.json`);
+                        return (ctx.body = tp);
+                    }
+                case 'Online':
+                    { //in this time, only implemented OpenAPI V2.0
+                        let item = await this.interModel.get(iid)
+                        curProject = await this.projectModel.get(item.project_id);
+                        let base_list = [{
+                            index: 0,
+                            _id: 0,
+                            name: curProject.name,
+                            project_id: curProject._id,
+                            desc: null,
+                            uid: 0,
+                            add_time: curProject.add_time,
+                            up_time: curProject.up_time,
+                            __v: 0,
+                            list: [item]
+                        }];
+                        let data = this.handleExistId(base_list);
+                        let model = await convertToSwaggerV2Model(data);
+                        tp = JSON.stringify(model, null, 2);
+                        ctx.set('Content-Type', 'application/json');
                         return (ctx.body = tp);
                     }
                 default:
@@ -97,7 +120,7 @@ class exportSwaggerController extends baseController {
             }
         } catch (error) {
             yapi.commons.log(error, 'error');
-            ctx.body = yapi.commons.resReturn(null, 502, '下载出错');
+            ctx.body = yapi.commons.resReturn(null, 502, '导出出错');
         }
 
         //Convert to SwaggerV2.0 (OpenAPI 2.0)

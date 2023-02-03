@@ -25,6 +25,8 @@ module.exports = {
     name: 'oauth2'
   }, {
     name: 'wecom'
+  }, {
+    name: 'redoc'
   }
     // {
     //   name: 'test'

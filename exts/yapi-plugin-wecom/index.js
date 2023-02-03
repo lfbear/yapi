@@ -62,9 +62,6 @@ module.exports = {
     511
   ],
   options: {
-    "name": "wecom",
-    "options": {
-      "host": "https://api.mgmt.snappay.ca"
-    }
+    "host": "https://api.mgmt.snappay.ca"
   }
 };
