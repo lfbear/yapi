@@ -1,6 +1,6 @@
 const yapi = require('yapi.js');
 const BaseController = require('controllers/base.js');
-const WecomRobotModel = require('./WecomRobotModel');
+const WecomRobotModel = require('./wecomRobotModel');
 const WecomRobotSender = require('./utils/wecom');
 
 class WecomRobotsController extends BaseController {

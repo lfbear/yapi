@@ -1,5 +1,5 @@
 const yapi = require("yapi.js");
-const WecomRobotModel = require("../WecomRobotModel");
+const WecomRobotModel = require("../wecomRobotModel");
 const ProjectModel = require("models/project");
 const GroupModel = require("models/group")
 const WecomRobotSender = require("./wecom");
