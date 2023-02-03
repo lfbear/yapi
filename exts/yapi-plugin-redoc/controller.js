@@ -49,7 +49,7 @@ class redocController extends baseController {
           </style>
         </head>
         <body>
-          <redoc spec-url='//`+ index.options.host + `/api/plugin/exportSwagger?type=Online&iid=` + id + `' disable-search></redoc>
+          <redoc spec-url='//`+ index.options.host + `/api/plugin/exportOneSwagger?iid=` + id + `' disable-search></redoc>
           <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
         </body>
       </html>`

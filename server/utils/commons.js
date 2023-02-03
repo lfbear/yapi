@@ -432,8 +432,7 @@ exports.createAction = (router, baseurl, routerController, action, path, method,
           return (ctx.body = yapi.commons.resReturn(null, 400, validResult.message));
         }
       }
-      //allow oauth2 plugin
-      if (inst.$auth === true || path === "/plugin/oauth2/callback") {
+      if (inst.$auth === true) {
         await inst[action].call(inst, ctx);
       } else {
         if (ws === true) {
