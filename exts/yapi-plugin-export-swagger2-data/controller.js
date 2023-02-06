@@ -66,6 +66,14 @@ class exportSwaggerController extends baseController {
         return data;
     }
 
+    deleteCodeComments(code) {
+        code = code.replace('://', ':@@')
+        var reg = /(\/\/.*)|(\/\*[\s\S]*?\*\/)/g;
+        var result = code.replace(reg, '');
+        result = result.replace(':@@', '://')
+        return result;
+    }
+
     //Convert to SwaggerV2.0 (OpenAPI 2.0)
     async convertToSwaggerV2Model(curProject, list) {
         const swaggerObj = {
@@ -176,7 +184,8 @@ class exportSwaggerController extends baseController {
                                     case 'json':
                                         {
                                             if (api.req_body_other) {
-                                                let jsonParam = JSON.parse(api.req_body_other);
+                                                let other = this.deleteCodeComments(api.req_body_other)
+                                                let jsonParam = JSON.parse(other);
                                                 if (jsonParam) {
                                                     paramArray.push({
                                                         name: 'root',
@@ -228,7 +237,8 @@ class exportSwaggerController extends baseController {
                                             schemaObj['default'] = api.res_body;
                                         } else if (api.res_body_type === 'json') {
                                             if (api.res_body) {
-                                                let resBody = JSON.parse(api.res_body);
+                                                let res_body = this.deleteCodeComments(api.res_body)
+                                                let resBody = JSON.parse(res_body);
                                                 if (resBody !== null) {
                                                     //schemaObj['type']=resBody.type;
                                                     schemaObj = resBody; //as the parameters, 
