@@ -259,7 +259,7 @@ class View extends Component {
         '//' +
         location.hostname +
         (location.port !== '' ? ':' + location.port : '') +
-        `/api/plugin/redoc/${detail._id
+        `/api/plugin/redoc/interface/${detail._id
         }`}</span>;
     } else {
       return <span>仅<b>已完成</b>和<b>开放状态</b>的接口可以提供该链接</span>;

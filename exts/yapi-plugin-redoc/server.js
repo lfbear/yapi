@@ -5,7 +5,7 @@ module.exports = function () {
     addRouter({
       controller: controller,
       method: 'get',
-      path: 'redoc/:id',
+      path: 'redoc/:type/:id',
       action: 'redocRender'
     });
   });

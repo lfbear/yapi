@@ -36,6 +36,28 @@ class exportSwaggerController extends baseController {
         return newResult;
     }
 
+    async handleListByCat(catInfo) {
+        let newResult = [];
+        let item = catInfo.toObject();
+        let list = await this.interModel.listByInterStatus(item._id, 'open');
+
+        list = list.sort((a, b) => {
+            return a.index - b.index;
+        });
+        if (list.length > 0) {
+            let tmp_list = []
+            list.forEach(e => {
+                if (e.status === 'done') {
+                    tmp_list.push(e)
+                }
+            })
+            item.list = tmp_list;
+            newResult.push(item);
+        }
+
+        return newResult;
+    }
+
     handleExistId(data) {
         function delArrId(arr, fn) {
             if (!Array.isArray(arr)) return;
@@ -294,16 +316,37 @@ class exportSwaggerController extends baseController {
         }
     }
 
+    async exportCatInterface(ctx) {
+        let id = ctx.request.query.id;
+        if (id) {
+            ctx.body = yapi.commons.resReturn(null, 200, 'Id 不为空');
+        }
+        let tp = '';
+        try {
+            let item = await this.catModel.get(id)
+            let curProject = await this.projectModel.get(item.project_id);
+            let base_list = await this.handleListByCat(item);
+            let data = this.handleExistId(base_list);
+            let model = await this.convertToSwaggerV2Model(curProject, data);
+            tp = JSON.stringify(model, null, 2);
+            ctx.set('Content-Type', 'application/json');
+            return (ctx.body = tp);
+        } catch (error) {
+            yapi.commons.log(error, 'error');
+            ctx.body = yapi.commons.resReturn(null, 502, '导出出错');
+        }
+    }
+
     async exportInterface(ctx) {
-        let iid = ctx.request.query.iid;
-        if (iid) {
-            ctx.body = yapi.commons.resReturn(null, 200, 'iid 不为空');
+        let id = ctx.request.query.id;
+        if (id) {
+            ctx.body = yapi.commons.resReturn(null, 200, 'Id 不为空');
         }
         let curProject;
         let tp = '';
         try {
             //in this time, only implemented OpenAPI V2.0
-            let item = await this.interModel.get(iid)
+            let item = await this.interModel.get(id)
             curProject = await this.projectModel.get(item.project_id);
             let base_list = [{
                 index: 0,

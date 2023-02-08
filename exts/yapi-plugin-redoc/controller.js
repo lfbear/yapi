@@ -1,5 +1,6 @@
 const baseController = require('controllers/base.js');
 const interfaceModel = require('models/interface.js');
+const catModel = require('models/interfaceCat.js');
 const yapi = require('yapi.js');
 const index = require('./index')
 
@@ -15,28 +16,45 @@ class redocController extends baseController {
    */
   async redocRender(ctx) {
     try {
-      // 获取code和state  
+      let type = ctx.params.type || 'interface';
       let id = ctx.params.id;
       if (isNaN(id)) {
         ctx.status = 404;
         ctx.body = "<h3>API ID is not existed</h3>"
         return
       }
-      let item = await yapi.getInst(interfaceModel).get(id)
+      let pageTitle = ''
+      let srcPath = ''
+      let item = {}
+      if (type === 'interface') {
+        item = await yapi.getInst(interfaceModel).get(id)
+        pageTitle = item.title
+        srcPath = 'exportInterface'
+      } else if (type === 'cat') {
+        item = await yapi.getInst(catModel).get(id)
+        pageTitle = item.name
+        srcPath = 'exportCatInterface'
+      } else {
+        ctx.status = 404;
+        ctx.body = "<h3>Unknown Type</h3>"
+        return
+      }
+
       if (!item) {
         ctx.status = 404;
         ctx.body = "<h3>API ID is not existed</h3>"
         return
       }
-      if (!item.api_opened || item.status != 'done') {
+      if (type === 'interface' && (!item.api_opened || item.status != 'done')) {
         ctx.status = 403;
         ctx.body = "<h3>API Doc is incomplete or non-public.</h3>"
         return
       }
+
       ctx.body = yapi.commons.body = `<!DOCTYPE html>
       <html>
         <head>
-          <title>`+ item.title + ` - Redoc</title>
+          <title>`+ pageTitle + ` - Redoc</title>
           <!-- needed for adaptive design -->
           <meta charset="utf-8"/>
           <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +67,7 @@ class redocController extends baseController {
           </style>
         </head>
         <body>
-          <redoc spec-url='//`+ index.options.host + `/api/plugin/exportOneSwagger?iid=` + id + `' disable-search></redoc>
+          <redoc spec-url='//`+ index.options.host + `/api/plugin/` + srcPath + `?id=` + id + `' disable-search></redoc>
           <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
         </body>
       </html>`

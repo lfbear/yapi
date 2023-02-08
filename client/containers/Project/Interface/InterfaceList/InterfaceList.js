@@ -83,7 +83,7 @@ class InterfaceList extends Component {
       await this.props.fetchInterfaceList(option);
     } else if (isNaN(params.actionId)) {
       let catid = params.actionId.substr(4);
-      this.setState({catid: +catid});
+      this.setState({ catid: +catid });
       let option = {
         page: this.state.current,
         limit,
@@ -195,10 +195,16 @@ class InterfaceList extends Component {
   //   }
   // };
 
+  showReDocLink = (catid) => {
+    return location.protocol + '//' + location.hostname +
+      (location.port !== '' ? ':' + location.port : '') +
+      '/api/plugin/redoc/cat/' + catid;
+  };
+
   render() {
     let tag = this.props.curProject.tag;
     let tagFilter = tag.map(item => {
-      return {text: item.name, value: item.name};
+      return { text: item.name, value: item.name };
     });
 
     const columns = [
@@ -364,7 +370,7 @@ class InterfaceList extends Component {
         <h2 className="interface-title" style={{ display: 'inline-block', margin: 0 }}>
           {intername ? intername : '全部接口'}共 ({total}) 个
         </h2>
-
+        <snap style={{ 'padding-left': 10 }}><b>Redoc地址</b> {this.showReDocLink(this.state.catid)}</snap>
         <Button
           style={{ float: 'right' }}
           disabled={isDisabled}

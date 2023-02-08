@@ -11,8 +11,14 @@ module.exports = function () {
         addRouter({
             controller: exportSwaggerController,
             method: 'get',
-            path: 'exportOneSwagger',
+            path: 'exportInterface',
             action: 'exportInterface'
+        });
+        addRouter({
+            controller: exportSwaggerController,
+            method: 'get',
+            path: 'exportCatInterface',
+            action: 'exportCatInterface'
         });
     })
 }
