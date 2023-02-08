@@ -31,7 +31,8 @@ class baseController {
       '/api/user/avatar',
       '/api/user/login_by_ldap',
       '/api/plugin/oauth2/callback',
-      '/api/plugin/exportOneSwagger',
+      '/api/plugin/exportInterface',
+      '/api/plugin/exportCatInterface',
     ];
     let ignoreRootRouter = [
       '/api/plugin/redoc/',
