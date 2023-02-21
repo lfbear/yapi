@@ -65,10 +65,32 @@ class redocController extends baseController {
               padding: 0;
             }
           </style>
+          <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+          <script>
+              mermaid.initialize({startOnLoad: true});
+          </script>
         </head>
         <body>
           <redoc spec-url='//`+ index.options.host + `/api/plugin/` + srcPath + `?id=` + id + `' disable-search></redoc>
           <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+          <script>
+          let renderedMermaidId = 0;
+          const nextId = () => {
+              renderedMermaidId++;
+              return renderedMermaidId;
+          };
+          const renderMermaidDiagrams = () => {
+              let mermaidNodes = document.querySelectorAll("pre > code.language-mermaid");
+              for (const nv of mermaidNodes) {
+                  let nextIdz = `+'`mermaid-${nextId()}`;'+`
+                  let codz = nv.textContent;
+                  mermaid.render(nextIdz, codz, svg => nv.parentNode.outerHTML = svg)
+              }
+          };
+          setTimeout(() => {
+            renderMermaidDiagrams();
+          }, "500")
+          </script>
         </body>
       </html>`
 
